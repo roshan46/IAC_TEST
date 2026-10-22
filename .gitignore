@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.env.*
+!.env.example
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+!*.tfvars.example
+*.tfbackend
+!*.tfbackend.example
+dist/
+.plan/
+*.log
+# Commit uv.lock and .terraform.lock.hcl.

@@ -1,0 +1,12 @@
+#!/bin/bash
+# Original exercise reference only. compute.tf now uses the implemented user-data.sh.
+# Review package/network access and add the SSM agent setup/check for your chosen AMI.
+set -euo pipefail
+apt-get update
+apt-get install -y python3 python3-venv curl
+id orderapp >/dev/null 2>&1 || useradd --system --home /opt/order-manager orderapp
+install -d -o orderapp -g orderapp /opt/order-manager /opt/order-manager/releases
+# Install AWS CLI v2 and uv using their official instructions.
+# Pin versions/checksums in your completed exercise.
+# /usr/local/bin/aws and /usr/local/bin/uv must be available before deployment.
+# Confirm the SSM agent is running and can reach SSM over outbound HTTPS.

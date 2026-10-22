@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <a href="{{ url_for('orders') }}">← All orders</a>
+  <h2>Order {{ order.id[:8] }}</h2>
+  <dl><dt>ID</dt><dd>{{ order.id }}</dd><dt>Product</dt><dd>{{ order.product }}</dd>
+    <dt>Quantity</dt><dd>{{ order.quantity }}</dd><dt>Status</dt><dd><strong>{{ order.status }}</strong></dd></dl>
+  {% if warning %}<p role="alert">{{ warning }}</p>{% endif %}
+  {% if order.error %}<p role="alert">{{ order.error }}</p>{% endif %}
+  {% if order.status in ['SUBMITTED', 'RUNNING'] %}<p>Processing is asynchronous. Refresh this page in a few seconds.</p>{% endif %}
+  <a href="{{ url_for('order_detail', order_id=order.id) }}">Refresh status</a>
+  {% if order.status == 'SUCCEEDED' %}<p><a href="{{ url_for('receipt', order_id=order.id) }}">Download receipt</a></p>{% endif %}
+</section>
+{% endblock %}

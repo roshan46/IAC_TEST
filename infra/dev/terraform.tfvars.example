@@ -1,0 +1,12 @@
+learner_cidr   = "203.0.113.10/32" # Documentation address: replace with your public IPv4.
+artifact_bucket = "YOUR_UNIQUE_ARTIFACT_BUCKET"
+ami_id          = "ami-02ad619be5bc165df" # Verified Ubuntu 24.04 x86_64 in us-east-2; review before deployment.
+availability_zones = ["us-east-2a", "us-east-2b"]
+db_engine_version = "17.11"
+db_skip_final_snapshot = true # Temporary demo data only; choose deliberately.
+# To retain a final snapshot instead:
+# db_skip_final_snapshot = false
+# db_final_snapshot_identifier = "order-manager-dev-final-UNIQUE-SUFFIX"
+# Milestone 4 manual mode: run scripts/package.py --snapshot, then set the real path:
+# lambda_package_directory = "../../dist/SOURCE_SNAPSHOT_ID"
+# Milestone 5 CI mode: leave the local directory null and supply real release_sha/lambda_hashes.

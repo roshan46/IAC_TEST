@@ -1,0 +1,10 @@
+:root { font-family: system-ui, sans-serif; color: #17312d; background: #f3f6f3; }
+body { margin: 0; } main { max-width: 900px; margin: 48px auto; padding: 0 24px; }
+h1 { font-size: 2.6rem; margin: 8px 0; } .eyebrow { letter-spacing: .15em; font-size: .75rem; }
+section { background: white; border: 1px solid #d8e2db; border-radius: 12px; padding: 24px; margin: 24px 0; }
+.banner { background: #dbeae1; padding: 12px; border-radius: 6px; }
+label { display: block; margin: 16px 0; } input, select, button { font: inherit; padding: 8px; }
+input[type=number] { width: 70px; } button { background: #205e49; color: white; border: 0; border-radius: 5px; cursor: pointer; }
+a { color: #205e49; } table { width: 100%; border-collapse: collapse; } th, td { text-align: left; padding: 10px 4px; border-bottom: 1px solid #e5ebe6; }
+dt { font-weight: bold; margin-top: 12px; } dd { margin-left: 0; overflow-wrap: anywhere; }
+@media (max-width: 550px) { main { padding: 0 12px; } section { padding: 14px; } table { font-size: .8rem; } }

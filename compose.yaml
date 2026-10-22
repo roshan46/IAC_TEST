@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: lab
+      POSTGRES_PASSWORD: lab
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab -d orders"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://lab:lab@db:5432/orders
+      APP_SECRET: local-practice-only-change-before-aws
+      WORKFLOW_MODE: local
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["sh", "-c", "flask --app app init-db && exec gunicorn --bind 0.0.0.0:8000 --workers 2 'app:create_app()'"]
+volumes:
+  postgres-data:

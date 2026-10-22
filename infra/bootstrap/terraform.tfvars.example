@@ -1,0 +1,11 @@
+github_repository    = "YOUR_OWNER/order-manager-lab"
+state_bucket_name    = "YOUR_UNIQUE_STATE_BUCKET"
+artifact_bucket_name = "YOUR_UNIQUE_ARTIFACT_BUCKET"
+
+# For new-format GitHub OIDC subjects, use IDs from the GitHub repository API.
+# Set both IDs to null only after verifying the repository uses legacy subjects.
+github_owner_id      = "123456"
+github_repository_id = "789012"
+
+# If this account already has the GitHub provider, set its ARN instead of creating one.
+existing_github_oidc_provider_arn = null

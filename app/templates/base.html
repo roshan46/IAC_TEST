@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Manager Lab</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main>
+  <header><p class="eyebrow">TERRAFORM / AWS PRACTICE</p><h1>Order Manager</h1>
+    <p>Demo products. Simulated fulfillment. No real purchases.</p></header>
+  <p class="banner">Workflow: {{ 'LOCAL SIMULATION — no AWS calls' if mode == 'local' else 'AWS STEP FUNCTIONS' }}</p>
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

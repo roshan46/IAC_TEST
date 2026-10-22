@@ -1,0 +1,111 @@
+{
+  "Comment": "Application asset: wire this template to a Standard state machine in milestone 4.",
+  "StartAt": "Validate",
+  "TimeoutSeconds": 180,
+  "States": {
+    "Validate": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${validate_arn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "TimeoutSeconds": 30,
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "ResultPath": "$.failure",
+          "Next": "ProcessingFailed"
+        }
+      ],
+      "Next": "Fulfill"
+    },
+    "Fulfill": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${fulfill_arn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "TimeoutSeconds": 30,
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "ResultPath": "$.failure",
+          "Next": "ProcessingFailed"
+        }
+      ],
+      "Next": "Receipt"
+    },
+    "Receipt": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${receipt_arn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "TimeoutSeconds": 30,
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException",
+            "Lambda.TooManyRequestsException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "ResultPath": "$.failure",
+          "Next": "ProcessingFailed"
+        }
+      ],
+      "End": true
+    },
+    "ProcessingFailed": {
+      "Type": "Fail",
+      "Error": "OrderProcessingFailed",
+      "Cause": "Inspect the failed task in execution history."
+    }
+  }
+}

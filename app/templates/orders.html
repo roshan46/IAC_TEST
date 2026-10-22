@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section>
+  <h2>Create a demo order</h2>
+  <form method="post" action="{{ url_for('create_order') }}">
+    <input type="hidden" name="token" value="{{ token }}">
+    <label>Product <select name="product">{% for product, cents in products.items() %}
+      <option value="{{ product }}">{{ product }} — USD {{ "%.2f"|format(cents / 100) }}</option>
+    {% endfor %}</select></label>
+    <label>Quantity <input type="number" name="quantity" value="1" min="1" max="10" required></label>
+    <label class="checkbox"><input type="checkbox" name="force_failure" value="true"> Simulate a fulfillment failure</label>
+    <button type="submit">Create order</button>
+  </form>
+</section>
+<section>
+  <h2>Recent orders</h2>
+  <p>Open an order to refresh its processing status.</p>
+  <table><thead><tr><th>Order</th><th>Product</th><th>Quantity</th><th>Status</th></tr></thead>
+  <tbody>{% for order in orders %}
+    <tr><td><a href="{{ url_for('order_detail', order_id=order.id) }}">{{ order.id[:8] }}</a></td>
+      <td>{{ order.product }}</td><td>{{ order.quantity }}</td><td>{{ order.status }}</td></tr>
+  {% else %}<tr><td colspan="4">No orders yet. Create your first one above.</td></tr>{% endfor %}</tbody></table>
+</section>
+{% endblock %}

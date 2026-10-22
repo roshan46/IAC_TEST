@@ -1,0 +1,48 @@
+name: Plan lab changes
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Plan deployment or teardown
+        type: choice
+        options: [deploy, destroy]
+        required: true
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: order-manager-dev
+  cancel-in-progress: false
+jobs:
+  plan:
+    if: github.ref == 'refs/heads/main' && vars.LAB_READY == 'true'
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-2
+      STATE_BUCKET: ${{ vars.STATE_BUCKET }}
+      ARTIFACT_BUCKET: ${{ vars.ARTIFACT_BUCKET }}
+      LEARNER_CIDR: ${{ vars.LEARNER_CIDR }}
+      AMI_ID: ${{ vars.AMI_ID }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.13"
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+        with:
+          terraform_version: "1.16.1"
+          terraform_wrapper: false
+      - run: uv sync --frozen --extra dev
+      - run: uv run pytest -q
+      - run: terraform fmt -check -recursive infra
+      - uses: aws-actions/configure-aws-credentials@ff717079ee2060e4bcee96c4779b553acc87447c # v4
+        with:
+          role-to-assume: ${{ vars.PLAN_ROLE_ARN }}
+          aws-region: us-east-2
+      - name: Save private reviewed plan
+        env:
+          OPERATION: ${{ inputs.operation }}
+        run: uv run python scripts/pipeline.py plan "$OPERATION"

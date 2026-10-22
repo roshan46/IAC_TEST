@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: orders_test
+      POSTGRES_USER: lab
+      POSTGRES_PASSWORD: lab
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab -d orders_test"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    tmpfs:
+      - /var/lib/postgresql/data
+  tests:
+    build:
+      context: .
+      target: test
+    environment:
+      TEST_DATABASE_URL: postgresql+psycopg://lab:lab@db:5432/orders_test
+    depends_on:
+      db:
+        condition: service_healthy
