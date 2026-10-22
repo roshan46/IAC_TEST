@@ -42,6 +42,7 @@ def main():
     plan_block, apply_block = permissions.split(
         'data "aws_iam_policy_document" "github_apply"', maxsplit=1)
     assert "ec2:RunInstances" not in plan_block
+    assert '"s3:GetAccelerateConfiguration"' in plan_block
     assert '"ssm:SendCommand"' in apply_block
     assert '"iam:*"' not in permissions
     assert "application_path" in permissions

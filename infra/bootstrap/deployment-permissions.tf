@@ -17,8 +17,12 @@ locals {
     "iam:ListAttachedRolePolicies",
     "iam:ListInstanceProfilesForRole",
     "iam:ListRolePolicies",
+    "iam:ListRoleTags",
     "lambda:GetFunction",
+    "lambda:GetFunctionCodeSigningConfig",
+    "lambda:GetFunctionConcurrency",
     "lambda:GetPolicy",
+    "lambda:GetRuntimeManagementConfig",
     "lambda:ListVersionsByFunction",
     "lambda:ListTags",
     "logs:DescribeLogGroups",
@@ -45,6 +49,7 @@ data "aws_iam_policy_document" "github_plan" {
   statement {
     sid = "ReadReceiptBucketConfiguration"
     actions = [
+      "s3:GetAccelerateConfiguration",
       "s3:GetBucket*",
       "s3:GetEncryptionConfiguration",
       "s3:GetLifecycleConfiguration",
@@ -87,6 +92,7 @@ data "aws_iam_policy_document" "github_apply" {
       "ec2:DetachInternetGateway",
       "ec2:DisassociateRouteTable",
       "ec2:ModifyInstanceAttribute",
+      "ec2:ModifyInstanceCreditSpecification",
       "ec2:ModifySubnetAttribute",
       "ec2:ModifyVpcAttribute",
       "ec2:ReplaceRoute",
@@ -118,7 +124,9 @@ data "aws_iam_policy_document" "github_apply" {
       "iam:PassRole",
       "iam:PutRolePolicy",
       "iam:RemoveRoleFromInstanceProfile",
+      "iam:TagInstanceProfile",
       "iam:TagRole",
+      "iam:UntagInstanceProfile",
       "iam:UntagRole",
       "iam:UpdateAssumeRolePolicy"
     ]
