@@ -12,7 +12,7 @@ After your local AWS credentials are available, review and apply this small boot
 
 ```bash
 terraform -chdir=infra/bootstrap init -input=false -reconfigure \
-  -backend-config=backend.s3.tfbackend
+  -backend-config backend.s3.tfbackend
 terraform -chdir=infra/bootstrap plan -input=false -out=milestone5-bootstrap.tfplan
 terraform -chdir=infra/bootstrap apply milestone5-bootstrap.tfplan
 ```

@@ -61,7 +61,7 @@ After the bucket exists, activate the supplied backend. Your ignored `backend.s3
 
 ```powershell
 Copy-Item infra/bootstrap/backend.tf.example infra/bootstrap/backend.tf
-terraform '-chdir=infra/bootstrap' init -migrate-state '-backend-config=backend.s3.tfbackend'
+terraform -chdir=infra/bootstrap init -migrate-state -backend-config backend.s3.tfbackend
 ```
 
 Confirm the state-copy prompt only after checking the destination bucket. Retain local state until migration succeeds. Commit `backend.tf` after migration; the bucket-name configuration file stays ignored. Do not reuse the initial saved local-backend plan after migration.

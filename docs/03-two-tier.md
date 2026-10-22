@@ -49,7 +49,7 @@ No NAT gateway, load balancer, or Lambda VPC attachment is needed at this stage.
 The ignored dev tfvars and backend files are populated for this account, and the S3 backend block is active. For a fresh checkout, copy and fill the examples. State must stay separate from bootstrap.
 
 ```bash
-terraform -chdir=infra/dev init -backend-config=backend.s3.tfbackend
+terraform -chdir=infra/dev init -backend-config backend.s3.tfbackend
 terraform -chdir=infra/dev fmt
 terraform -chdir=infra/dev validate
 terraform -chdir=infra/dev plan -out=network.tfplan

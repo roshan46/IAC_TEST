@@ -46,10 +46,11 @@ def require_environment():
 
 def initialize():
     tf("init", "-input=false",
-       "-backend-config=bucket=" + os.environ["STATE_BUCKET"],
-       "-backend-config=key=dev/order-manager/terraform.tfstate",
-       "-backend-config=region=" + os.environ["AWS_REGION"],
-       "-backend-config=encrypt=true", "-backend-config=use_lockfile=true")
+       "-backend-config", "bucket=" + os.environ["STATE_BUCKET"],
+       "-backend-config", "key=dev/order-manager/terraform.tfstate",
+       "-backend-config", "region=" + os.environ["AWS_REGION"],
+       "-backend-config", "encrypt=true",
+       "-backend-config", "use_lockfile=true")
     if not (INFRA / ".terraform.lock.hcl").exists():
         raise ValueError("Commit the initialized provider lock file before CI deployment")
     # Fail if init altered the reviewed provider selection.
